@@ -3,6 +3,7 @@ import { io } from "https://cdn.socket.io/4.7.2/socket.io.esm.min.js";
 
 class RuralBotWidget {
     widgetContainer = null;
+    shadowContainer = null;
 
     constructor() {
         this.initialize();
@@ -12,13 +13,15 @@ class RuralBotWidget {
 
     async initialize() {
         this.widgetContainer = document.createElement("div");
+        this.shadowContainer = this.widgetContainer.attachShadow({ mode: "open" });
         this.createBotWidget();
 
         document.body.appendChild(this.widgetContainer);
     }
 
     createBotWidget() {
-        this.widgetContainer.innerHTML = `
+        const widgetHtml = document.createElement("div");
+        widgetHtml.innerHTML = `
             <div id="main-container" class="main-container">
             <div class="chat-container">
                 <div class="chat-header">
@@ -58,10 +61,10 @@ class RuralBotWidget {
             </div>
 
             <!-- <div class="video-container">
-                        <video id="video-source" class="video-portrait" autoplay>
+                    <video id="video-source" class="video-portrait" autoplay>
                         <source src="" type="video/mp4"/>
-                        </video>
-                    </div> -->
+                    </video>
+                </div> -->
             </div>
 
             <div class="chatbot-button-container">
@@ -71,33 +74,41 @@ class RuralBotWidget {
                 </button>
             </div>
             </div>
-        `
+        `;
+
+        this.shadowContainer.appendChild(widgetHtml);
     }
 
     injectStyles() {
         const styleTag = document.createElement("style");
         styleTag.innerHTML = styles.replace(/^\s+|\n/gm, "");
-        document.head.appendChild(styleTag);
+        this.shadowContainer.appendChild(styleTag);
 
-        const linkFont = document.createElement("link");
-        linkFont.rel = "stylesheet";
-        linkFont.href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css";
-        document.head.appendChild(linkFont);
+        // fontAwesome should be added to main DOM
+        const fontAwesomeLink = document.createElement("link");
+        fontAwesomeLink.rel = "stylesheet";
+        fontAwesomeLink.href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css";
+        document.head.appendChild(fontAwesomeLink);
+
+        const googleFont = document.createElement("link");
+        googleFont.rel = "stylesheet";
+        googleFont.href = "https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap";
+        document.head.appendChild(googleFont);
     }
 
     setupWidget() {
-        const sendButton = document.getElementById("send-button");
-        const inputField = document.getElementById("input-field");
-        const recordButton = document.getElementById("record-button");
-        const videoField = document.getElementById("video-source");
-        const chatbotButton = document.getElementById("chatbot-button");
-        const closeButton = document.getElementById("close-button");
-        const ellipsis = document.getElementById("ellipsis-animation");
+        const sendButton = this.shadowContainer.querySelector("#send-button");
+        const inputField = this.shadowContainer.querySelector("#input-field");
+        const recordButton = this.shadowContainer.querySelector("#record-button");
+        const videoField = this.shadowContainer.querySelector("#video-source");
+        const chatbotButton = this.shadowContainer.querySelector("#chatbot-button");
+        const closeButton = this.shadowContainer.querySelector("#close-button");
+        const ellipsis = this.shadowContainer.querySelector("#ellipsis-animation");
         ellipsis.style.display = "none";
 
         // EVENTS
         chatbotButton.addEventListener("click", () => {
-            const mainContainer = document.getElementById("main-container");
+            const mainContainer = this.shadowContainer.querySelector("#main-container");
             if (mainContainer.style.display == "flex") {
                 mainContainer.style.display = "none";
                 return;
@@ -107,7 +118,7 @@ class RuralBotWidget {
         });
 
         closeButton.addEventListener("click", () => {
-            const mainContainer = document.getElementById("main-container");
+            const mainContainer = this.shadowContainer.querySelector("#main-container");
             mainContainer.style.display = "none";
         });
 
@@ -199,7 +210,7 @@ class RuralBotWidget {
         // Add system message chat entry
         let systemMessageBox;
         function addSystemMessage(message, status) {
-            const container = document.getElementById("message-container");
+            const container = this.shadowContainer.querySelector("#message-container");
 
             if (status == "start") {  
                 const divEl = document.createElement("div");
@@ -235,7 +246,7 @@ class RuralBotWidget {
 
         function addMessageToChat(message, sender) {
             const parser = new DOMParser();
-            const container = document.getElementById("message-container");
+            const container = this.shadowContainer.querySelector("#message-container");
             const senderEl = document.createElement("div");
 
             const span_message = attachSpanTagOnMessage(message);
