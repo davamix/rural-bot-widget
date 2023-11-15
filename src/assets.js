@@ -72,7 +72,7 @@ export const styles = `
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  background-image: url("logo_512.png");
+  background-image: url("https://github.com/davamix/rural-bot-widget/blob/main/src/logo_512.png");
 }
 
 .profile-name {

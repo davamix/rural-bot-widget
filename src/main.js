@@ -214,7 +214,7 @@ class RuralBotWidget {
                 removeWaitingMessage(systemMessageBox);
             } else if (status == "finish") {
                 message = systemMessageBox.textContent;
-                urls = systemMessageBox.textContent.match(/\b((https?|ftp|file):\/\/|(www|ftp)\.)[-A-Z0-9+&@#\/%?=~_|$!:,.;]*[A-Z0-9+&@#\/%=~_|$]/ig);
+                const urls = systemMessageBox.textContent.match(/\b((https?|ftp|file):\/\/|(www|ftp)\.)[-A-Z0-9+&@#\/%?=~_|$!:,.;]*[A-Z0-9+&@#\/%=~_|$]/ig);
                 
                 if (urls) {
                     message = replaceSimpleLinkOnMessage(message, Object.values(urls));
@@ -250,14 +250,14 @@ class RuralBotWidget {
         }
 
         function addWaitingMessage(parent) {
-            ellipsisEl = ellipsis.cloneNode(true);
+            const ellipsisEl = ellipsis.cloneNode(true);
             ellipsisEl.style.display = "inline-block";
 
             parent.appendChild(ellipsisEl);
         }
 
         function removeWaitingMessage(parent) {
-            ellipsisEl = parent.querySelector(".ellipsis-animation:last-child");
+            const ellipsisEl = parent.querySelector(".ellipsis-animation:last-child");
             if (ellipsisEl) {
                 ellipsisEl.remove();
             }
@@ -328,7 +328,7 @@ class RuralBotWidget {
         }
 
         // EVENT SOCKETS
-        var socket = io("http://back:8000");
+        var socket = io("http://108.141.253.238:8000");
         // options = {
         //   cors: {
         //     origin: "http://ruralbot.pythonanywhere.com",
