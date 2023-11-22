@@ -339,7 +339,7 @@ class RuralBotWidget {
         }
 
         // EVENT SOCKETS
-        var socket = io("https://ruralbot.metoai.net");
+        var socket = io("https://ruralbotapp.westeurope.azurecontainer.io");
         // options = {
         //   cors: {
         //     origin: "http://ruralbot.pythonanywhere.com",
