@@ -3,7 +3,7 @@ import { io } from "https://cdn.socket.io/4.7.2/socket.io.esm.min.js";
 
 class RuralBotWidget {
     widgetContainer = null;
-    shadowContainer = null;
+    shadowContainer = 3;
 
     constructor() {
         this.initialize();
@@ -11,7 +11,7 @@ class RuralBotWidget {
         this.setupWidget();
     }
 
-    async initialize() {
+    initialize() {
         this.widgetContainer = document.createElement("div");
         this.shadowContainer = this.widgetContainer.attachShadow({ mode: "open" });
         this.createBotWidget();
@@ -148,7 +148,7 @@ class RuralBotWidget {
         });
 
         // FUNCTIONS
-        function onRecordSuccess(stream) {
+        const onRecordSuccess = (stream) => {
             const mediaRecorder = new MediaRecorder(stream);
             let chunks = [];
 
@@ -177,7 +177,7 @@ class RuralBotWidget {
             }
         }
 
-        function onRecordError(err) {
+        const onRecordError = (err) => {
             console.log("The following error occurred: " + err);
         }
 
@@ -193,7 +193,7 @@ class RuralBotWidget {
             recordButton.style.display = "none";
         }
 
-        function sendClientMessage(message) {
+        const sendClientMessage = (message) => {
             const data = JSON.parse(`{"message" : "${message}"}`);
 
             if (!data) return;
@@ -202,14 +202,14 @@ class RuralBotWidget {
         }
 
         // Add user message chat entry
-        function addUserMessage(message) {
+        const addUserMessage = (message) => {
             addMessageToChat(message, "bubblesender");
             // addWaitingMessage();
         }
 
         // Add system message chat entry
         let systemMessageBox;
-        function addSystemMessage(message, status) {
+        const addSystemMessage = (message, status) => {
             const container = this.shadowContainer.querySelector("#message-container");
 
             if (status == "start") {  
@@ -244,7 +244,7 @@ class RuralBotWidget {
             container.scrollTop = container.scrollHeight;
         }
 
-        function addMessageToChat(message, sender) {
+        const addMessageToChat = (message, sender) => {
             const parser = new DOMParser();
             const container = this.shadowContainer.querySelector("#message-container");
             const senderEl = document.createElement("div");
@@ -260,33 +260,33 @@ class RuralBotWidget {
             container.scrollTop = container.scrollHeight;
         }
 
-        function addWaitingMessage(parent) {
+        const addWaitingMessage = (parent) => {
             const ellipsisEl = ellipsis.cloneNode(true);
             ellipsisEl.style.display = "inline-block";
 
             parent.appendChild(ellipsisEl);
         }
 
-        function removeWaitingMessage(parent) {
+        const removeWaitingMessage = (parent) => {
             const ellipsisEl = parent.querySelector(".ellipsis-animation:last-child");
             if (ellipsisEl) {
                 ellipsisEl.remove();
             }
         }
         
-        function createLinkTag(url) {
+        const createLinkTag = (url) => {
             return "<a href='" + url + "' target='_blank'>" + url + "</a>";
         }
 
-        function createImageTag(url) {
+        const createImageTag = (url) => {
             return "<a href='" + url + "' target='_blank'><img src='" + url + "'></a>d";
         }
 
-        function createVideoTag(url) {
+        const createVideoTag = (url) => {
             return "<video controls><source src='" + url + "' type='video/mp4'></video>";
         }
 
-        function replaceLinksOnMessage(message, urls) {
+        const replaceLinksOnMessage = (message, urls) => {
             if (urls.length == 0) {
                 return message;
             }
@@ -308,7 +308,7 @@ class RuralBotWidget {
             return message;
         }
 
-        function replaceSimpleLinkOnMessage(message, urls) {
+        const replaceSimpleLinkOnMessage = (message, urls) => {
             for (link of urls) {
                 const linkTag = createLinkTag(link);
                 message = message.replace(link, linkTag);
@@ -317,11 +317,11 @@ class RuralBotWidget {
             return message;
         }
 
-        function hasInitialTag(message, tag) {
+        const hasInitialTag = (message, tag) => {
             return (message.indexOf(tag) == 0);
         }
 
-        function replaceNewLineOnMessage(message) {
+        const replaceNewLineOnMessage = (message) => {
             const newLineChr = "\n";
             const newLineHtml = "<br>"
 
@@ -334,25 +334,12 @@ class RuralBotWidget {
             return message;
         }
 
-        function attachSpanTagOnMessage(message) {
+        const attachSpanTagOnMessage = (message) => {
             return "<span>" + message + "</span>";
         }
 
         // EVENT SOCKETS
         var socket = io("https://ruralbotapp.westeurope.azurecontainer.io");
-        // options = {
-        //   cors: {
-        //     origin: "http://ruralbot.pythonanywhere.com",
-        //     credentials: false
-        //   },
-        //   transports:["websocket"]
-        // }
-        // var socket = io("http://ruralbot.pythonanywhere.com/", options);
-        // socket.on("connect", (data) => {
-        //   socket.emit("connection_client_stablished_event", {
-        //     data: "Client connected",
-        //   });
-        // });
 
         socket.on("disconnect", () => {
             console.log("Disconnected from server");
@@ -404,3 +391,4 @@ class RuralBotWidget {
 }
 
 (() => new RuralBotWidget())();
+
