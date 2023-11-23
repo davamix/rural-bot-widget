@@ -208,7 +208,7 @@ class RuralBotWidget {
         }
 
         // Add system message chat entry
-        let systemMessageBox;
+        var systemMessageBox = null;
         const addSystemMessage = (message, status) => {
             const container = this.shadowContainer.querySelector("#message-container");
 
@@ -291,7 +291,7 @@ class RuralBotWidget {
                 return message;
             }
 
-            for (item of urls) {
+            for (let item of urls) {
                 let linkTag = item.content;
 
                 if (item.type == "link") {
@@ -309,7 +309,7 @@ class RuralBotWidget {
         }
 
         const replaceSimpleLinkOnMessage = (message, urls) => {
-            for (link of urls) {
+            for (let link of urls) {
                 const linkTag = createLinkTag(link);
                 message = message.replace(link, linkTag);
             }
@@ -339,7 +339,9 @@ class RuralBotWidget {
         }
 
         // EVENT SOCKETS
-        var socket = io("https://ruralbotapp.westeurope.azurecontainer.io");
+        var socket = io("https://ruralbotapp.westeurope.azurecontainer.io", {
+            transports: ["websocket"]
+        });
 
         socket.on("disconnect", () => {
             console.log("Disconnected from server");

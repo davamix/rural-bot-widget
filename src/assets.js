@@ -58,6 +58,7 @@ export const styles = `
   display: flex;
   flex-direction: row;
   align-items: center;
+  color: black;
   background-color: rgba(255, 255, 255, 0.5);
   overflow: hidden;
   padding: 5px;
