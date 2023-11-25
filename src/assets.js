@@ -2,6 +2,10 @@ export const styles = `
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css");
 
+:host {
+  all: initial;
+}
+
 .chatbot-button {
   position: absolute;
   right: 50px;
@@ -16,6 +20,7 @@ export const styles = `
   box-shadow: 0 2px 4px rgba(136, 94, 254, 1);
   border-radius: 50%;
   cursor: pointer;
+  z-index: 999;
 }
 
 .chatbot-button:hover {
@@ -34,6 +39,7 @@ export const styles = `
   /* background-color:teal; */
   /* justify-content: center; */
   font-family: "Roboto", sans-serif;
+  z-index: 999;
 }
 
 .chat-container {
