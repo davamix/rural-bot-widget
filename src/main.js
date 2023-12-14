@@ -339,7 +339,10 @@ class RuralBotWidget {
         }
 
         // EVENT SOCKETS
-        var socket = io("https://ruralbotapp.westeurope.azurecontainer.io", {
+        // var socket = io("https://ruralbotapp.westeurope.azurecontainer.io", {
+        //     transports: ["websocket"]
+        // });
+        var socket = io("https://metoai.es:32769", {
             transports: ["websocket"]
         });
 
